@@ -7,6 +7,11 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 
 define('BASE', '/laporkampus');   // path web aplikasi di dalam htdocs
+
+// Produksi: jangan pernah tampilkan error PHP ke pengunjung
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+date_default_timezone_set('Asia/Jakarta');
 define('APP_NAME', 'LaporKampus');
 define('APP_SUB', 'Universitas Jenderal Soedirman');
 
@@ -23,6 +28,6 @@ try {
     );
 } catch (PDOException $e) {
     http_response_code(500);
-    exit('Koneksi database gagal. Pastikan MySQL XAMPP berjalan dan database "laporkampus" sudah diimpor.'
-        . ' Detail: ' . htmlspecialchars($e->getMessage()));
+    error_log('[LaporKampus] koneksi DB gagal: ' . $e->getMessage());
+    exit('Layanan sedang tidak tersedia. Silakan coba beberapa saat lagi.');
 }

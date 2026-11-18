@@ -3,7 +3,25 @@ require_once __DIR__ . '/../config/koneksi.php';
 require_once __DIR__ . '/fungsi.php';
 
 if (session_status() === PHP_SESSION_NONE) {
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+          || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'httponly' => true,
+        'secure'   => $https,
+        'samesite' => 'Lax',
+    ]);
+    session_name('LK_SESSION');
     session_start();
+}
+
+// Header keamanan dasar
+if (!headers_sent()) {
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: same-origin');
+    header('X-Permitted-Cross-Domain-Policies: none');
 }
 
 function pengguna(): ?array

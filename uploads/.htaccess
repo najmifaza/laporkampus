@@ -1,5 +1,14 @@
 # Tolak eksekusi skrip di folder unggahan
-php_flag engine off
-<FilesMatch "\.(php|phtml|phar|php3|php4|php5|php7|php8|pl|py|cgi|sh)$">
+Options -Indexes -ExecCGI
+RemoveHandler .php .phtml .phar .php3 .php4 .php5 .php7 .php8
+AddType text/plain .php .phtml .phar
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>
+
+<FilesMatch "\.(php|phtml|phar|php3|php4|php5|php7|php8|pl|py|cgi|sh|htaccess)$">
   Require all denied
 </FilesMatch>

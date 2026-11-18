@@ -16,15 +16,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass  = (string) ($_POST['password'] ?? '');
     $next  = (string) ($_POST['next'] ?? '/laporan/index.php');
 
-    $st = $pdo->prepare('SELECT id, nama, nim_nip, email, password_hash, role, aktif FROM users WHERE email = ?');
-    $st->execute([$email]);
-    $user = $st->fetch();
-
-    if (!$user || !password_verify($pass, $user['password_hash'])) {
-        $err = 'Email atau password salah.';
-    } elseif (!(int) $user['aktif']) {
-        $err = 'Akun ini sedang dinonaktifkan. Hubungi unit sarpras.';
+    // Rem darurat brute force: 5 percobaan gagal -> tahan 60 detik
+    $user  = null;
+    $kunci = (int) ($_SESSION['login_lock'] ?? 0);
+    if ($kunci > time()) {
+        $err = 'Terlalu banyak percobaan. Coba lagi dalam ' . ($kunci - time()) . ' detik.';
     } else {
+        $st = $pdo->prepare('SELECT id, nama, nim_nip, email, password_hash, role, aktif FROM users WHERE email = ?');
+        $st->execute([$email]);
+        $user = $st->fetch();
+    }
+
+    if ($err === null && (!$user || !password_verify($pass, $user['password_hash']))) {
+        $_SESSION['login_gagal'] = (int) ($_SESSION['login_gagal'] ?? 0) + 1;
+        if ($_SESSION['login_gagal'] >= 5) {
+            $_SESSION['login_lock']   = time() + 60;
+            $_SESSION['login_gagal']  = 0;
+        }
+        $err = 'Email atau password salah.';
+    } elseif ($err === null && !(int) $user['aktif']) {
+        $err = 'Akun ini sedang dinonaktifkan. Hubungi unit sarpras.';
+    } elseif ($err === null) {
+        $_SESSION['login_gagal'] = 0;
         session_regenerate_id(true);
         $_SESSION['user'] = [
             'id'      => (int) $user['id'],

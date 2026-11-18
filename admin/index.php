@@ -26,8 +26,13 @@ if ($fKategori > 0) {
     $params['kat'] = $fKategori;
 }
 if ($cari !== '') {
-    $where[] = '(l.judul LIKE :q OR l.lokasi LIKE :q OR l.kode LIKE :q OR p.nama LIKE :q)';
-    $params['q'] = '%' . $cari . '%';
+    // placeholder terpisah: PDO dengan prepare asli menolak nama parameter ganda
+    $where[] = '(l.judul LIKE :q1 OR l.lokasi LIKE :q2 OR l.kode LIKE :q3 OR p.nama LIKE :q4)';
+    $like = '%' . $cari . '%';
+    $params['q1'] = $like;
+    $params['q2'] = $like;
+    $params['q3'] = $like;
+    $params['q4'] = $like;
 }
 $sqlWhere = 'WHERE ' . implode(' AND ', $where);
 
