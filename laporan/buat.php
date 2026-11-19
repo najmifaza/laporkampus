@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
-wajib_login();
+wajib_pelapor();   // admin hanya memakai dashboard
 
 $u   = pengguna();
 $err = [];

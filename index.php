@@ -75,8 +75,11 @@ include __DIR__ . '/includes/header.php';
       </div>
       <?php if (!$u): ?>
         <a href="<?= BASE ?>/register.php" class="btn btn-ghost mt-4 w-full">Daftar akun untuk melapor</a>
-      <?php else: ?>
+      <?php elseif ($u['role'] === 'pelapor'): ?>
         <a href="<?= BASE ?>/laporan/buat.php" class="btn btn-gold mt-4 w-full">Buat laporan baru</a>
+        <a href="<?= BASE ?>/laporan/index.php" class="btn btn-ghost mt-2 w-full">Lihat laporan saya</a>
+      <?php else: ?>
+        <a href="<?= BASE ?>/admin/index.php" class="btn btn-gold mt-4 w-full">Buka dashboard sarpras</a>
       <?php endif; ?>
       </div>
     </div>
@@ -193,13 +196,17 @@ include __DIR__ . '/includes/header.php';
 <section class="mx-auto max-w-6xl px-4 py-14">
   <div class="grid items-center gap-8 rounded-xl border border-line bg-white p-6 md:grid-cols-[1fr_auto] md:p-8">
     <div>
-      <h2 class="text-xl font-semibold text-navy">Menemukan kerusakan lain?</h2>
+      <h2 class="text-xl font-semibold text-navy"><?= ($u && $u['role'] === 'admin') ? 'Pantau penanganan laporan' : 'Menemukan kerusakan lain?' ?></h2>
       <p class="mt-2 max-w-xl text-xs leading-relaxed text-muted">
         Satu laporan satu kerusakan. Hindari menggabungkan beberapa masalah dalam satu tiket
         agar penanganannya tidak tertunda.
       </p>
     </div>
-    <a href="<?= BASE ?>/laporan/buat.php" class="btn btn-primary">Buat laporan</a>
+    <?php if ($u && $u['role'] === 'admin'): ?>
+      <a href="<?= BASE ?>/admin/index.php" class="btn btn-primary">Buka dashboard</a>
+    <?php else: ?>
+      <a href="<?= BASE ?>/laporan/buat.php" class="btn btn-primary">Buat laporan</a>
+    <?php endif; ?>
   </div>
 </section>
 

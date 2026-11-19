@@ -2,7 +2,11 @@
 require_once __DIR__ . '/../includes/auth.php';
 wajib_login();
 
-$u   = pengguna();
+$u = pengguna();
+if ($u['role'] === 'admin') {
+    // admin tidak punya laporan sendiri; arahkan ke dashboard
+    redirect('/admin/index.php');
+}
 $fStatus = (string) ($_GET['status'] ?? '');
 $statusSah = ['diterima', 'diverifikasi', 'dikerjakan', 'selesai', 'ditolak'];
 if ($fStatus !== '' && !in_array($fStatus, $statusSah, true)) {

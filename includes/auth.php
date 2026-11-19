@@ -37,6 +37,25 @@ function wajib_login(): void
     }
 }
 
+// Admin fokus di dashboard: tidak membuat laporan
+function wajib_pelapor(): void
+{
+    wajib_login();
+    if ((pengguna()['role'] ?? '') !== 'pelapor') {
+        http_response_code(403);
+        $judul = 'Akses ditolak';
+        include __DIR__ . '/header.php';
+        echo '<div class="mx-auto max-w-3xl px-4 py-16 text-center">'
+           . '<p class="text-5xl font-bold text-navy">403</p>'
+           . '<h1 class="mt-3 text-xl font-semibold">Akun admin tidak membuat laporan</h1>'
+           . '<p class="mt-2 text-sm text-muted">Tugas admin sarpras adalah memverifikasi dan memperbarui status laporan di dashboard.</p>'
+           . '<a href="' . BASE . '/admin/index.php" class="btn btn-primary mt-6 inline-flex">Buka dashboard</a>'
+           . '</div>';
+        include __DIR__ . '/footer.php';
+        exit;
+    }
+}
+
 function wajib_admin(): void
 {
     wajib_login();

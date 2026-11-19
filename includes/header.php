@@ -42,13 +42,7 @@ tailwind.config = {
       <span class="hidden h-3 w-px bg-white/25 sm:block"></span>
       <span class="font-medium">Sistem Pelaporan Fasilitas</span>
     </span>
-    <nav class="flex items-center gap-4 text-white/80">
-      <a href="<?= BASE ?>/track.php" class="hover:text-gold-soft">Lacak Tiket</a>
-      <span class="hidden sm:inline text-white/30">|</span>
-      <a href="<?= BASE ?>/index.php#cara" class="hidden sm:inline hover:text-gold-soft">Cara Kerja</a>
-      <span class="hidden sm:inline text-white/30">|</span>
-      <span class="hidden sm:inline text-white/60">Helpdesk Sarpras</span>
-    </nav>
+    <span class="text-white/80">Helpdesk Sarpras</span>
   </div>
 </div>
 
@@ -66,15 +60,10 @@ tailwind.config = {
 
     <nav class="hidden items-center gap-1 text-sm font-medium md:flex">
       <a href="<?= BASE ?>/index.php" class="nav-link">Beranda</a>
-      <a href="<?= BASE ?>/track.php" class="nav-link">Lacak Tiket</a>
-      <?php if ($u): ?>
-        <a href="<?= BASE ?>/laporan/index.php" class="nav-link">Laporan Saya</a>
-        <a href="<?= BASE ?>/laporan/buat.php" class="nav-link">Buat Laporan</a>
-        <?php if ($u['role'] === 'admin'): ?>
-          <a href="<?= BASE ?>/admin/index.php" class="nav-link">Dashboard</a>
-          <a href="<?= BASE ?>/admin/kategori.php" class="nav-link">Kategori</a>
-          <a href="<?= BASE ?>/admin/pengguna.php" class="nav-link">Pengguna</a>
-        <?php endif; ?>
+      <?php if ($u && $u['role'] === 'admin'): ?>
+        <a href="<?= BASE ?>/admin/index.php" class="nav-link">Dashboard</a>
+        <a href="<?= BASE ?>/admin/kategori.php" class="nav-link">Kategori</a>
+        <a href="<?= BASE ?>/admin/pengguna.php" class="nav-link">Pengguna</a>
       <?php endif; ?>
     </nav>
 
@@ -95,15 +84,10 @@ tailwind.config = {
   <!-- menu mobile -->
   <div class="flex gap-1 overflow-x-auto border-t border-line px-4 py-2 text-xs font-medium md:hidden">
     <a href="<?= BASE ?>/index.php" class="nav-link">Beranda</a>
-    <a href="<?= BASE ?>/track.php" class="nav-link">Lacak</a>
-    <?php if ($u): ?>
-      <a href="<?= BASE ?>/laporan/index.php" class="nav-link">Laporan Saya</a>
-      <a href="<?= BASE ?>/laporan/buat.php" class="nav-link">Buat</a>
-      <?php if ($u['role'] === 'admin'): ?>
-        <a href="<?= BASE ?>/admin/index.php" class="nav-link">Dashboard</a>
-        <a href="<?= BASE ?>/admin/kategori.php" class="nav-link">Kategori</a>
-        <a href="<?= BASE ?>/admin/pengguna.php" class="nav-link">Pengguna</a>
-      <?php endif; ?>
+    <?php if ($u && $u['role'] === 'admin'): ?>
+      <a href="<?= BASE ?>/admin/index.php" class="nav-link">Dashboard</a>
+      <a href="<?= BASE ?>/admin/kategori.php" class="nav-link">Kategori</a>
+      <a href="<?= BASE ?>/admin/pengguna.php" class="nav-link">Pengguna</a>
     <?php endif; ?>
   </div>
 </header>
